@@ -56,16 +56,20 @@
             const messageInput = document.getElementById('message');
             const sendButton = document.getElementById('send');
             const chatMessages = document.getElementById('chat-messages');
-
+            const socket = io();
+    
             sendButton.addEventListener('click', function () {
                 const message = messageInput.value.trim();
                 if (message !== '') {
-                    appendMessage('You', message);
+                    socket.emit('chat message', message);
                     messageInput.value = '';
-                    // You can add code here to send the message to a server
                 }
             });
-
+    
+            socket.on('chat message', function (msg) {
+                appendMessage('Someone', msg);
+            });
+    
             function appendMessage(sender, message) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message');
@@ -74,6 +78,6 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         });
-    </script>
+    </script>    
 </body>
 </html>
